@@ -3,7 +3,21 @@
 ### Setup
 Config your OPENAI api key into appsettings.json and run
 
-### Sample
+```json
+{
+  "OpenAiApiKey": "sk-xxx"
+}
+
+
+```
+
+### Demo
+
+
+
+https://github.com/minhhungit/SimpleFeedlyChatDemo/assets/2279508/bc372e5b-b1c8-4bf3-971c-1d7e508daccf
+
+
 
 Xin chào! Dưới đây là một số khả năng của tôi cùng với các câu hỏi mẫu tương ứng:
 
