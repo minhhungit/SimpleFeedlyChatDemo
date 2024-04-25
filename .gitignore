@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/SimpleFeedlyChatDemo/.vs
+/SimpleFeedlyChatDemo/bin/Debug/net8.0/bin/Debug/net8.0
+/SimpleFeedlyChatDemo/bin/Debug/net8.0/.vs/SimpleFeedlyChatDemo/v17
+/SimpleFeedlyChatDemo/bin/Debug/net8.0/obj
+/SimpleFeedlyChatDemo/bin/Debug/net8.0
+/SimpleFeedlyChatDemo/obj

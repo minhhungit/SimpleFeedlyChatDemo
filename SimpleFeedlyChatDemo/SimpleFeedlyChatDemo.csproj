@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<NoWarn>SKEXP0020,SKEXP0010,SKEXP0001,SKEXP0050,SKEXP0060</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CodeHollow.FeedReader" Version="1.2.6" />
+		<PackageReference Include="Microsoft.KernelMemory.Core" Version="0.36.240416.1" />
+		<PackageReference Include="Microsoft.SemanticKernel" Version="1.7.1" />
+		<PackageReference Include="Microsoft.SemanticKernel.Planners.Handlebars" Version="1.7.1-preview" />
+		<PackageReference Include="Microsoft.SemanticKernel.Plugins.Core" Version="1.7.1-alpha" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="appsettings.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+	<Target Name="CopyFiles" AfterTargets="Build">
+		<ItemGroup>
+			<!-- Define the files you want to copy -->
+			<FilesToCopy Include="**\*.json" />
+			<FilesToCopy Include="**\*.txt" />
+		</ItemGroup>
+		<!-- Create the destination directory -->
+		<MakeDir Directories="$(OutputPath)\Plugins" />
+
+		<!-- Copy the files -->
+		<Copy SourceFiles="@(FilesToCopy)" DestinationFolder="$(OutputPath)\%(RecursiveDir)" SkipUnchangedFiles="true" />
+	</Target>
+	
+</Project>
