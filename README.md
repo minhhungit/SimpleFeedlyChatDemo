@@ -8,10 +8,6 @@
 - Tóm tắt văn bản
 - ...
 
-### Assets
-- Microsoft Semantic Kernel
-- OpenAI gpt-3.5-turbo
-
 ### Setup
 Config your OPENAI api key into appsettings.json and run
 
@@ -19,10 +15,9 @@ Config your OPENAI api key into appsettings.json and run
 {
   "OpenAiApiKey": "sk-xxx"
 }
-
-
 ```
 
 ### Demo
 
-https://github.com/minhhungit/SimpleFeedlyChatDemo/assets/2279508/bc372e5b-b1c8-4bf3-971c-1d7e508daccf
+https://github.com/minhhungit/SimpleFeedlyChatDemo/assets/2279508/554fc928-ddbe-499e-a5a4-b49e43e2af07
+
