@@ -1,7 +1,8 @@
 ## Super Simple LLM Chat App 
 
 ### Setup
-Config your OPENAI api key into appsettings.json and run
+- Install python and trafilatura library, config PATH for trafilatura
+- Config your OPENAI api key into appsettings.json and run
 
 ```json
 {
