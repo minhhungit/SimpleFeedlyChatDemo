@@ -7,6 +7,7 @@ using SimpleFeedlyChatDemo.Functions;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace SimpleFeedlyChatDemo
 {
@@ -41,7 +42,29 @@ namespace SimpleFeedlyChatDemo
             }
 
             IKernelBuilder kb = Kernel.CreateBuilder();
-            kb.AddOpenAIChatCompletion("gpt-3.5-turbo", apikey);
+
+            var modelName = "gpt-3.5-turbo";
+            var useGroq = configuration.GetValue<bool>("UseGroq");
+            var enableStreaming = true;
+
+            if (useGroq)
+            {
+                apikey = System.Environment.GetEnvironmentVariable("PRIVATE_GROQ_KEY", EnvironmentVariableTarget.User)!;
+                if (string.IsNullOrWhiteSpace(apikey))
+                {
+                    apikey = configuration.GetSection("GroqApiKey").Value ?? string.Empty;
+                }
+
+                modelName = "llama3-70b-8192";
+                enableStreaming = false;
+                kb.AddOpenAIChatCompletion(modelName, apikey, httpClient: new HttpClient(new ProxAIHandler("https://api.groq.com/openai")));
+            }
+            else
+            {
+                kb.AddOpenAIChatCompletion(modelName, apikey);
+            }
+            
+
             kb.Services.AddLogging(c => c.AddConsole().SetMinimumLevel(LogLevel.Error));
 
             kb.Plugins.AddFromType<TimePlugin>();
@@ -59,13 +82,22 @@ namespace SimpleFeedlyChatDemo
             var ai = kernel.GetRequiredService<IChatCompletionService>();
             OpenAIPromptExecutionSettings settings = new() { ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions };
 
-            ChatHistory chat = new(@$"Bạn là trợ lý AI");
+            ChatHistory chat = new(@$"Bạn là trợ lý AI - Default answer in Vietnamese");
             chat.AddUserMessage("Xin chào, hãy cho biết bạn có những khả năng gì, ứng với mỗi khả năng hãy đề xuất 1 hoặc 2 câu hỏi");
 
-            await foreach (var message in ai.GetStreamingChatMessageContentsAsync(chat, settings, kernel))
+            if (!enableStreaming)
             {
-                Console.Write(message);
+                // due to it's tool and function call has not supported streaming
+                Console.Write(await ai.GetChatMessageContentAsync(chat, settings, kernel));
             }
+            else
+            {
+                await foreach (var message in ai.GetStreamingChatMessageContentsAsync(chat, settings, kernel))
+                {
+                    Console.Write(message);
+                }
+            }
+
             Console.WriteLine("\n\n");
 
             StringBuilder builder = new();
@@ -86,11 +118,22 @@ namespace SimpleFeedlyChatDemo
                 Console.WriteLine("LOG: AI đang suy nghĩ...");
                 Console.ResetColor();
 
-                await foreach (var message in ai.GetStreamingChatMessageContentsAsync(chat, settings, kernel))
+                if (!enableStreaming)
                 {
-                    Console.Write(message);
-                    builder.Append(message);
+                    var msg = await ai.GetChatMessageContentAsync(chat, settings, kernel);
+
+                    Console.WriteLine(msg);
+                    builder.AppendLine(msg.ToString());
                 }
+                else
+                {
+                    await foreach (var message in ai.GetStreamingChatMessageContentsAsync(chat, settings, kernel))
+                    {
+                        Console.Write(message);
+                        builder.Append(message);
+                    }
+                }
+                
                 Console.WriteLine();
 
                 var assistantMsg = builder.ToString();
