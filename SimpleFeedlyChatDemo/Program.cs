@@ -80,7 +80,11 @@ namespace SimpleFeedlyChatDemo
             Console.WriteLine();
 
             var ai = kernel.GetRequiredService<IChatCompletionService>();
-            OpenAIPromptExecutionSettings settings = new() { ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions };
+            OpenAIPromptExecutionSettings settings = new()
+            {
+                ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
+                Temperature = 0.5
+            };
 
             ChatHistory chat = new(@$"Bạn là trợ lý AI - Default answer in Vietnamese");
             chat.AddUserMessage("Xin chào, hãy cho biết bạn có những khả năng gì, ứng với mỗi khả năng hãy đề xuất 1 hoặc 2 câu hỏi");
