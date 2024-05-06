@@ -9,7 +9,7 @@
 {
   "UseGroq": true,
   "OpenAiApiKey": "sk-xxx",
-  "GroqApiKey": "sk-xxx"
+  "GroqApiKey": "gsk_xxx"
 }
 ```
 
