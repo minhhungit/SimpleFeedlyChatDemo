@@ -3,10 +3,13 @@
 ### Setup
 - Install python and trafilatura library, config PATH for trafilatura
 - Config your OPENAI api key into appsettings.json and run
+- If you want to run with LLAMA 3 (hosting on Groq), you just need to put a groq API Key and enable UseGroq = true in appsettings.json
 
 ```json
 {
-  "OpenAiApiKey": "sk-xxx"
+  "UseGroq": true,
+  "OpenAiApiKey": "sk-xxx",
+  "GroqApiKey": "sk-xxx"
 }
 ```
 
